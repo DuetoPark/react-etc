@@ -1,0 +1,44 @@
+.project-slider,
+.project-slider > * {
+  width: 100%;
+}
+
+.slider-view {
+  background-color: aqua;
+  margin-bottom: 64px;
+}
+
+.slider {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.slider-list {
+  width: 100%;
+  display: flex;
+  transition: transform 350ms ease-in-out;
+  background-color: tomato;
+}
+
+.slider-item {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  background-color: blueviolet;
+}
+
+.controller button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 4px;
+  background-color: #efefef;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.slider-option {
+  background-color: violet;
+}
