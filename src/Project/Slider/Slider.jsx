@@ -5,13 +5,32 @@ export default function Slider() {
   const _sliderItems = Array(6).fill('item');
 
   const [total, setTotal] = useState(0);
-  const [_view, setView] = useState(1);
+  const [_option, setOption] = useState({view: 1, gutter: 0});
   const [curSlider, setCurSlider] = useState(1);
 
   useEffect(() => {
     setTotal(prev => document.querySelector('.slider-list').childElementCount);
-    // setView(prev => document.querySelector('#view').value || prev);
   }, []);
+
+  const handleView = (e) => {
+    const newView = e.currentTarget.value;
+    const isChange = newView && newView <= total;
+
+    if (newView > total) {
+      alert(total + '보다 작거나 같은 값을 입력해주세요');
+      e.currentTarget.value = '';
+      return;
+    }
+    
+    setOption(prev => ({...prev, view: isChange ? newView : prev.view}));
+    setCurSlider(prev => isChange ? 1 : prev);
+  };
+
+  const handleGutter = (e) => {
+    const gutter = e.currentTarget.value;
+
+    setOption(prev => ({...prev, gutter}));
+  }
 
   return (
     <div className='project-slider'>
@@ -31,7 +50,8 @@ export default function Slider() {
               <div
                 className='slider-item'
                 style={{
-                  width: `${100 / _view}%`,
+                  width: `calc(${100 / _option.view}% - ${_option.gutter}px)`,
+                  margin: `0 ${_option.gutter / 2}px`
                 }}  
               >
                 <article>{index + 1}</article>
@@ -45,15 +65,15 @@ export default function Slider() {
             btnType='prev'
             setCurSlider={setCurSlider}
             isDisabled={curSlider === 1}
-            view={_view}
+            view={_option.view}
           >
               &lt;
           </ControllerBtn>
           <ControllerBtn
             btnType='next'
             setCurSlider={setCurSlider}
-            isDisabled={curSlider === Math.ceil(total/_view)}
-            view={_view}
+            isDisabled={curSlider === Math.ceil(total/_option.view)}
+            view={_option.view}
           >
               &gt;
           </ControllerBtn>
@@ -61,7 +81,7 @@ export default function Slider() {
 
         <dl className='pagenation'>
           <dt>현재 페이지</dt>
-          <dd>{curSlider}/{Math.ceil(total/_view)}</dd>
+          <dd>{curSlider}/{Math.ceil(total/_option.view)}</dd>
         </dl>
       </section>
 
@@ -71,25 +91,13 @@ export default function Slider() {
         </header>
 
         <label>
-          <span>보여줄 슬라이더 개수</span>
-          <input type="text" name='view' id='view' onChange={(e) => {
-            const newView = e.currentTarget.value;
-            const isChange = newView && newView <= total;
-
-            if (newView > total) {
-              alert(total + '보다 작거나 같은 값을 입력해주세요');
-              e.currentTarget.value = '';
-              return;
-            }
-            
-            setView(prev => isChange ? newView : prev);
-            setCurSlider(prev => isChange ? 1 : prev);
-          }} />
+          <span>개수</span>
+          <input type="tel" name='option' id='view' placeholder='보여줄 슬라이더의 개수를 설정하세요' onChange={handleView} />
         </label>
 
         <label>
           <span>gutter</span>
-          <input type="text" />
+          <input type="tel" name='option' id='gutter' placeholder='슬라이더의 간격을 설정하세요' onChange={handleGutter} />
         </label>
       </section>
     </div>
